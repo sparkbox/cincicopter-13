@@ -11,18 +11,23 @@ FLIP_WAIT = 2000;
 
 var processCommands = function(commands) {
   if (_.isEmpty(commands)) { return; }
-  command = commands[0];
-  action = command.action;
+  var command = commands[0],
+  action = command.action,
+  wait = command.wait,
+  duration = command.duration;
+
   if (action === 'land') {
     c.land(client);
+  } else if(h.isAnimation(action)) {
+    h.log(action + ' for ' + wait + 'ms');
+    client.animate(action, duration);
   } else {
-    h.log(action + ' for ' + command.duration + 'ms');
+    h.log(action + ' for ' + wait + 'ms');
     client[command.action](command.speed);
-    client.after(command.duration, function() {
-      h.log('next');
-      processCommands(commands.slice(1));
-    });
   }
+  client.after(wait, function() {
+    processCommands(commands.slice(1));
+  });
 };
 
 main = function() {
@@ -32,11 +37,11 @@ main = function() {
   client.takeoff(function() {
     h.log('Took Off');
     commands = [
-      {action: 'stop', duration: 1000},
-      {action: 'up', speed: 0.3, duration: 500},
-      {action: 'stop', duration: 1000},
-      {action: 'clockwise', speed: 0.3, duration: 500},
-      {action: 'stop', duration: 1000},
+      {action: 'stop', wait: 1000},
+      {action: 'up', speed: 0.3, wait: 500},
+      {action: 'stop', wait: 1000},
+      {action: 'flipAhead', wait: FLIP_WAIT, duration: 10},
+      {action: 'stop', wait: 1000},
       {action: 'land'},
     ];
     processCommands(commands);
@@ -44,7 +49,7 @@ main = function() {
 };
 
 try {
-  setTimeout(function() { main(); }, 1000);
+  setTimeout(function() { main(); }, 2000);
 } catch (e) {
   h.log('Landing due to exception:\n', e);
   client.land(function() {
