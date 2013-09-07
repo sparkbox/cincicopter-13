@@ -1,0 +1,31 @@
+{
+  "name": "cincicopter-13",
+  "version": "0.0.1",
+  "description": "Making a drone that fixes us a fancy meal.",
+  "main": "main.js",
+  "dependencies": {
+    "ar-drone": "~0.2.0"
+  },
+  "devDependencies": {
+    "ar-drone": "~0.2.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sparkbox/cincicopter-13.git"
+  },
+  "keywords": [
+    "node",
+    "copter",
+    "awesome",
+    "fancy",
+    "meal"
+  ],
+  "author": "Jeremy Mack, Rob Harr, and Ethan Muller",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sparkbox/cincicopter-13/issues"
+  }
+}
