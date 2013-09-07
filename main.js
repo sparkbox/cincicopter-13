@@ -14,7 +14,6 @@ main = function() {
   h.log('Taking Off');
   client.takeoff(function() {
     h.log('Took Off');
-    process.exit();
     client.after(3000, function() {
       this.clockwise(ROTATE_SPEED);
     }).after(SPIN_WAIT, function() {
