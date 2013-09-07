@@ -1,4 +1,8 @@
 var arDrone = require('ar-drone');
 var client = arDrone.createClient();
 
-client.land();
+console.log('============ EMERGENCY LANDING =============');
+client.land(function() {
+  console.log('============ LANDED =============');
+  process.exit();
+});

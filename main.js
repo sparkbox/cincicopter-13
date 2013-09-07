@@ -2,33 +2,28 @@ var arDrone = require('ar-drone');
 var client = arDrone.createClient();
 
 var land = function() {
-  client.after(1, function() {
-    client.land();
-  }).after(1, function() {
+  console.log('Landing');
+  client.land(function() {
+    console.log('Landed');
     process.exit();
   });
 };
 
-// var run = function(function)
+// client.on('navdata', console.log);
 
 var ROTATE_SPEED = 0.8,
 SPIN_WAIT = 3000;
 
 main = function() {
+  console.log('Taking Off');
   client.takeoff();
 
-  client.after(5000, function() {
+  client.after(3000, function() {
     this.clockwise(ROTATE_SPEED);
   }).after(SPIN_WAIT, function() {
     this.stop();
-  }).after(1000, function() {
-    this.counterClockwise(ROTATE_SPEED);
-  }).after(SPIN_WAIT, function() {
-    this.stop();
   }).after(50, function() {
-    this.land();
-  }).after(50, function() {
-    process.exit();
+    land();
   });
 };
 
