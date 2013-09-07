@@ -1,38 +1,35 @@
+var h = require('./helpers');
+var c = require('./commands');
 var arDrone = require('ar-drone');
 var client = arDrone.createClient();
 
-var land = function() {
-  console.log('Landing');
-  client.land(function() {
-    console.log('Landed');
-    process.exit();
-  });
-};
-
 // client.on('navdata', console.log);
 
-var ROTATE_SPEED = 0.8,
-SPIN_WAIT = 3000;
+var ROTATE_SPEED = 1,
+SPIN_WAIT = 2000;
 
 main = function() {
-  console.log('Taking Off');
-  client.takeoff();
+  c.exitIfLowBattery(client);
 
-  client.after(3000, function() {
-    this.clockwise(ROTATE_SPEED);
-  }).after(SPIN_WAIT, function() {
-    this.stop();
-  }).after(50, function() {
-    land();
+  h.log('Taking Off');
+  client.takeoff(function() {
+    h.log('Took Off');
+    process.exit();
+    client.after(3000, function() {
+      this.clockwise(ROTATE_SPEED);
+    }).after(SPIN_WAIT, function() {
+      this.stop();
+    }).after(50, function() {
+      c.land(client);
+    });
   });
 };
 
 try {
   main();
 } catch (e) {
-  console.log('Landing due to exception.');
-  client.land();
-  client.after(1, function() {
+  h.log('Landing due to exception:\n', e);
+  client.land(function() {
     process.exit();
   });
 }
